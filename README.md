@@ -299,6 +299,51 @@ Notes:
 - spaCy uses the lightweight `English` sentencizer; no large model download required.
 - If you have a CUDA GPU, prefer installing `faiss-gpu` and a CUDA-enabled PyTorch.
 
+## How to Run and Use
+
+### Run locally
+```bash
+# 1) Go to the repo
+cd /Users/yash/Desktop/Yash/github/RAG-Model-For-Web-Data-and-PDF-Data-Using-Google-Gemma
+
+# 2) (Recommended) Create & activate a virtual env
+python3 -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+
+# 3) Install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# 4) Install PyTorch appropriate for your system (CPU or CUDA)
+# See PyTorch selector: https://pytorch.org/get-started/locally/
+pip install torch torchvision torchaudio
+
+# 5) (Optional) If Gemma weights are gated, log in to Hugging Face
+# huggingface-cli login
+
+# 6) Launch the Streamlit app
+streamlit run Streamlit_Driver.py
+```
+
+### Using the app
+- Enter your query in the text box.
+- Upload a PDF if you plan to use modes containing “PDF”.
+- Choose a Search Mode:
+  - Web_search_RAG: retrieve from the web only.
+  - PDF_Search_RAG: retrieve from the uploaded PDF only (requires PDF).
+  - Pdf_Google_search: combined web + PDF retrieval (requires PDF).
+  - LLM_GoogleResults_PDF: combined RAG with Gemma answer synthesis (requires PDF).
+  - LLM: direct Gemma response (no RAG grounding).
+- Choose a RAG method: `dot product`, `cosine`, `euclidean`, `faiss`, `hybrid_BM25_Embeddings`, `cross_encoder`.
+- Optional knobs:
+  - Number of URLs to search, snippet length, Verbose Answer toggle.
+  - “Use entire PDF” to bypass Chapter 1 auto-detection.
+- Click Run Query.
+
+### Platform tips
+- macOS/CPU: prefer non-LLM modes if you don’t have an NVIDIA GPU; 4-bit quantization (`bitsandbytes`) may be unavailable on macOS.
+- CUDA GPU: you can enable quantized Gemma; consider installing `faiss-gpu` and a CUDA-enabled PyTorch build.
+
 ## Troubleshooting
 
 - Torch/Streamlit crash at startup:
